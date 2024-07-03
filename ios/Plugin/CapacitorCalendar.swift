@@ -334,7 +334,7 @@ public class CapacitorCalendar: NSObject, EKEventEditViewDelegate, EKCalendarCho
         }
     }
 
-    public func createCalendar(title: String, color: String?) throws -> String {
+    public func createCalendar(title: String, color: String?, isDefault: Bool?) throws -> String {
         let newCalendar = EKCalendar(for: .event, eventStore: eventStore)
         newCalendar.title = title
         if let calendarColor = color {
@@ -346,6 +346,9 @@ public class CapacitorCalendar: NSObject, EKEventEditViewDelegate, EKCalendarCho
 
         do {
             try eventStore.saveCalendar(newCalendar, commit: true)
+            if isDefault ?? false {
+                UserDefaults.standard.set(newCalendar.calendarIdentifier, forKey: "DefaultCalendarIdentifier")
+            }
         } catch {
             throw CapacitorCalendarPluginError.unableToCreateCalendar
         }
@@ -437,6 +440,15 @@ public class CapacitorCalendar: NSObject, EKEventEditViewDelegate, EKCalendarCho
             dict["isAllDay"] = event.isAllDay
             dict["calendarId"] = event.calendar.calendarIdentifier
             return dict
+        }
+    }
+
+    public func setDefaultCalendar(id: String) throws -> [String: String]? {
+        if let calendar = eventStore.calendar(withIdentifier: id) {
+            UserDefaults.standard.set(calendar.calendarIdentifier, forKey: "DefaultCalendarIdentifier")
+            return ["calendarIdentifier": calendar.calendarIdentifier]
+        } else {
+            throw NSError(domain: "DefaultCalendarPlugin", code: 404, userInfo: [NSLocalizedDescriptionKey: "Calendar not found"])
         }
     }
 }

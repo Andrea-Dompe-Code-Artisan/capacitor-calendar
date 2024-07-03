@@ -477,4 +477,21 @@ public class CapacitorCalendarPlugin: CAPPlugin {
             }
         }
     }
+
+    @objc func setDefaultCalendar(_ call: CAPPluginCall) {
+        guard let id = call.getString("id") else {
+            call.reject("Must provide a calendar identifier")
+            return
+        }
+        
+        do {
+            if let result = try setDefaultCalendar(id: id) {
+                call.resolve(result)
+            } else {
+                call.reject("Failed to set default calendar")
+            }
+        } catch {
+            call.reject("An error occurred: \(error.localizedDescription)")
+        }
+    }
 }

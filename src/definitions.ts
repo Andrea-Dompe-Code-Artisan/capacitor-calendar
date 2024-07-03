@@ -416,7 +416,7 @@ export interface CapacitorCalendarPlugin {
    *  });
    *  console.log(result);   // 'CALENDAR_ID'
    */
-  createCalendar(options: { title: string; color?: string }): Promise<{ result: string }>;
+  createCalendar(options: { title: string; color?: string, isDefault?: boolean }): Promise<{ result: string }>;
 
   /**
    * Deletes a calendar by id
@@ -531,4 +531,21 @@ export interface CapacitorCalendarPlugin {
    * const { result } = await this.requestFullRemindersAccess();
    */
   requestFullRemindersAccess(): Promise<{ result: PermissionState }>;
+
+  /**
+   * Set the default calendar set on the device.
+   *
+   * @method setDefaultCalendar
+   * @platform iOS
+   * @permissions
+   * <h3>Runtime Permissions:</h3>
+   * <ul>
+   *   <li><strong>iOS:</strong> writeCalendar</li>
+   * </ul>
+   * @returns {Promise<{ result: string }>} A promise that resolves with the id of the created event.
+   * @example
+   * const { result } = await setDefaultCalendar();
+   * console.log(result);   // 'CALENDAR_ID'
+   */
+  setDefaultCalendar(options: { id: string }): Promise<{ result: string }>;
 }
