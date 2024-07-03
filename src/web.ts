@@ -110,7 +110,7 @@ export class CapacitorCalendarWeb extends WebPlugin implements CapacitorCalendar
     throw this.unimplemented(`${this.deleteEventsById.name} is not implemented on the web`);
   }
 
-  public createCalendar(_options: { title: string; color?: string }): Promise<{ result: string }> {
+  public createCalendar(_options: { title: string; color?: string, isDefault?: boolean }): Promise<{ result: string }> {
     throw this.unimplemented(`${this.createCalendar.name} is not implemented on the web`);
   }
 
@@ -142,5 +142,9 @@ export class CapacitorCalendarWeb extends WebPlugin implements CapacitorCalendar
 
   public requestFullRemindersAccess(): Promise<{ result: PermissionState }> {
     throw this.unimplemented(`${this.requestFullRemindersAccess.name} is not implemented on the web`);
+  }
+
+  public setDefaultCalendar(_options: { id: string }): Promise<{ result: string }> {
+    throw this.unimplemented(`${this.setDefaultCalendar.name} is not implemented on the web`);
   }
 }
